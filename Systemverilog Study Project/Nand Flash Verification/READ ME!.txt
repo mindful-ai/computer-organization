@@ -1,0 +1,47 @@
+***Simulation Instructions***
+
+1) Copy all files to a directory.
+2) Open QuestaSim, create a project pointing to the directory.
+3) Add all .sv files to the project.
+4) In transcript window, run command "do run.do".
+
+***Description of files***
+
+definitions.sv
+Contains various Macros imported by other files.
+
+DualPortRAM.sv
+Data buffer used for read/write operations between host and memory.
+
+MemoryController.sv
+Top level controller module which instantiates and handles communication between various leaf level modules.
+
+MemoryInterface.sv
+Interface between memory controller and the memory model.
+
+MemoryStub.sv
+Memory model as per the Samsung K9F1G08R0A Flash memory datasheet.
+
+MFSM.sv and TFSM.sv
+The main FSM module and the timing FSM module, containing two state machines, are the primary modules of the design. These two modules work with each other. The state machine in the main FSM module interprets commands from the host, then passes control signals to the timing FSM module. The state machine in the timing FSM module creates all the necessary control signals for the NAND Flash to execute repeated tasks with strict timing requirements according to the signals from the main FSM module.
+
+NFC_TOP.sv
+This top level module instantiates the wb_slave and memory_controller.
+
+SystemTop.sv
+This is the top level module which instantiates other top level modules and interfaces connecting them.
+
+WishboneFSM.sv
+This has a state machine which interprets commands and data from the host sent using the wishbone protocol and sends appropriate signals to the memory controller.
+
+WishboneInterface.sv
+This is an interface between the host and the wishboneFSM. Host uses tasks defined in this interface to perform operations on the flash memory.
+
+ACounter.sv
+The address counter module generates the address control signals required for the data buffer module based on the state machine in the main FSM module.
+
+H_gen.sv
+The ECC generator module generates the Error Correction Code (ECC) during program operation and stores the ECC code in the NAND Flash.
+
+ErrLoc.sv
+The ECC detector module makes use of this ECC code in the Flash memory to detect errors in the data during host read operation.
